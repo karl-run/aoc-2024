@@ -1,12 +1,12 @@
 import * as R from 'remeda'
-import { getInputAsLines } from '../utils/input.ts'
+import { inputAsLines } from '../utils/input.ts'
 
 const input = await Bun.file('day1/input.txt').text()
 
 function splitInput(input: string) {
   return R.pipe(
     input,
-    getInputAsLines,
+    inputAsLines,
     R.flatMap(R.split('   ')),
     R.map((it) => +it),
     R.partition((value, index) => index % 2 === 0),
