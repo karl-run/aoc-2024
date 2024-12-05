@@ -1,20 +1,41 @@
 import * as R from 'remeda';
 
 const input = await Bun.file('day1/input.txt').text();
-const [left, right] = R.pipe(
-    input,
-    R.split('\n'),
-    R.flatMap(R.split("   ")),
-    R.filter(it => it.length > 0),
-    R.map(it => +it),
-    R.partition((value, index) => index % 2 === 0),
-    R.map(R.sortBy(R.identity())),
-);
 
-const output = R.pipe(
-    R.zip(left, right),
-    R.map(([a, b]) => Math.abs(b - a)),
-    R.sum(),
-)
+function splitInput(input: string) {
+    return R.pipe(
+        input,
+        R.split('\n'),
+        R.flatMap(R.split("   ")),
+        R.filter(it => it.length > 0),
+        R.map(it => +it),
+        R.partition((value, index) => index % 2 === 0),
+        R.map(R.sortBy(R.identity())),
+    )
+}
 
-console.log(`Day 1 result: ${output}`);
+function part1() {
+    const [left, right] = splitInput(input);
+
+    const output = R.pipe(
+        R.zip(left, right),
+        R.map(([a, b]) => Math.abs(b - a)),
+        R.sum(),
+    )
+
+    console.log(`Day 1 result: ${output}`);
+}
+
+function part2() {
+    const [left, right] = splitInput(input);
+    const output = R.pipe(
+        left,
+        R.map(l => l * right.filter(it => it === l).length),
+        R.sum(),
+    );
+
+    console.log(`Day 1 part 2 result: ${output}`);
+}
+
+part1()
+part2()
